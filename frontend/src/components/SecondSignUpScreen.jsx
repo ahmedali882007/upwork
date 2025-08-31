@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IoLogoApple } from "react-icons/io";
 import countryList from "react-select-country-list";
 import Select from "react-select";
@@ -8,6 +8,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { regUser, userReset } from "../features/auth/authSlice";
 
 const SecondSignUpScreen = ({ role }) => {
   const [formFields, setFormFields] = useState({
@@ -35,32 +37,46 @@ const SecondSignUpScreen = ({ role }) => {
 
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
-    setLoading(true);
-    try {
-      let response = await axios.post(
-        "http://localhost:5174/api/users/register-user",
-        {
-          f_name,
-          l_name,
-          email,
-          password,
-          mails,
-          terms,
-          role,
-          country,
-        }
-      );
-      localStorage.setItem("user", JSON.stringify(response.data));
+  const dispatch = useDispatch();
 
-      navigate("/otp-verification");
+  const { userLoading, userSuccess, userError, userMessage, user } =
+    useSelector((state) => state.auth);
 
-      console.log(response.data);
-    } catch (error) {
-      toast.error(error.response?.data?.message);
-      // console.log(error.response.data.message);
+  useEffect(() => {
+    if (userError) {
+      toast.error(userMessage);
     }
-    setLoading(false);
+
+    dispatch(userReset());
+  }, [userError]);
+
+  const handleRegister = async () => {
+    // setLoading(true);
+    // try {
+    //   let response = await axios.post(
+    //     "http://localhost:5174/api/users/register-user",
+    //     {
+    //       f_name,
+    //       l_name,
+    //       email,
+    //       password,
+    //       mails,
+    //       terms,
+    //       role,
+    //       country,
+    //     }
+    //   );
+    //   localStorage.setItem("user", JSON.stringify(response.data));
+    //   navigate("/otp-verification");
+    //   console.log(response.data);
+    // } catch (error) {
+    //   toast.error(error.response?.data?.message);
+    //   // console.log(error.response.data.message);
+    // }
+    // setLoading(false);
+    dispatch(
+      regUser({ f_name, l_name, email, password, mails, terms, role, country })
+    );
   };
 
   return (
