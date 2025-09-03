@@ -27,6 +27,18 @@ const SecondSignUpScreen = ({ role }) => {
 
   const [country, setCountry] = useState("");
 
+  const { userLoading, userSuccess, userError, userMessage, user } =
+    useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, []);
+
   const handleChange = (e) => {
     setFormFields({
       ...formFields,
@@ -35,20 +47,17 @@ const SecondSignUpScreen = ({ role }) => {
     });
   };
 
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-
-  const { userLoading, userSuccess, userError, userMessage, user } =
-    useSelector((state) => state.auth);
-
   useEffect(() => {
     if (userError) {
       toast.error(userMessage);
     }
 
+    if (userSuccess) {
+      navigate("/otp-verification");
+    }
+
     dispatch(userReset());
-  }, [userError]);
+  }, [userError, userSuccess]);
 
   const handleRegister = async () => {
     // setLoading(true);
@@ -206,14 +215,14 @@ const SecondSignUpScreen = ({ role }) => {
           </label>
           {/* Button */}
           <button
-            disabled={loading}
+            disabled={userLoading}
             onClick={handleRegister}
             type="button"
             className={`w-full ${
-              loading ? "bg-gray-200" : "bg-green-600 hover:bg-green-700 "
+              userLoading ? "bg-gray-200" : "bg-green-600 hover:bg-green-700 "
             } cursor-pointer flex gap-2 justify-center items-center text-white py-2 rounded-md `}
           >
-            {loading ? (
+            {userLoading ? (
               <>
                 <ClipLoader size={20} color="white" />
                 Creating Account

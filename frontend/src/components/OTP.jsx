@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const OtpVerification = () => {
@@ -20,7 +21,7 @@ const OtpVerification = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"));
+    // const user = JSON.parse(localStorage.getItem("user"));
     const myOTP = user?.otp;
 
     if (otp.join("") === myOTP) {
@@ -29,6 +30,8 @@ const OtpVerification = () => {
       setError("Invalid OTP or OTP expired");
     }
   };
+
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

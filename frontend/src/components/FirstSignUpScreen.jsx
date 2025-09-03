@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegCircle, FaUserTie } from "react-icons/fa6";
 import Radio from "@mui/material/Radio";
 import SecondSignUpScreen from "./SecondSignUpScreen";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const FirstSignupScreen = () => {
   const [role, setRole] = useState("");
   const [secondScreen, setSecondScreen] = useState(false);
+
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/work");
+    }
+  }, []);
 
   return (
     <>
