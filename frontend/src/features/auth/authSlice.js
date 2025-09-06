@@ -7,6 +7,7 @@ let isUser = JSON.parse(localStorage.getItem("user"));
 
 // 2. create initial state
 const initialState = {
+  isAuthenticated: false, // initially logged out
   user: isUser ? isUser : null,
   userLoading: false,
   userSuccess: false,
@@ -42,6 +43,17 @@ export const authSlice = createSlice({
       state.userError = false;
       state.userMessage = "";
     },
+    login: (state) => {
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.userLoading = false;
+      state.userSuccess = false;
+      state.userError = false;
+      localStorage.removeItem("user");
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,4 +76,4 @@ export const authSlice = createSlice({
 
 // 4. export it to store
 export default authSlice.reducer;
-export const { userReset } = authSlice.actions;
+export const { userReset, login, logout } = authSlice.actions;
