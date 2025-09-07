@@ -28,7 +28,7 @@ const MainNav = () => {
                   {item?.list && (
                     <ul className="absolute top-[40px] group-hover:text-black hidden rounded-lg nested-ul w-64 group-hover:flex shadow border border-gray-200  flex-col bg-white px-4 py-4 gap-2 ">
                       {item?.list?.map((item2, index2) => {
-                        return <li>{item2?.title} </li>;
+                        return <li key={index2}>{item2?.title} </li>;
                       })}
                     </ul>
                   )}

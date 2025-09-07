@@ -10,7 +10,7 @@ const jobSchema = mongoose.Schema(
         type: String,
         duration: String,
         experience: String,
-        term: string,
+        term: String,
       },
       default: {},
     },
@@ -23,6 +23,7 @@ const jobSchema = mongoose.Schema(
     },
     desc: { type: String },
     file: { type: String },
+    term: { type: String },
   },
   { timestamps: true }
 );
